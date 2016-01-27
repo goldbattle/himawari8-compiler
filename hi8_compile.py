@@ -16,12 +16,14 @@ scale = int(sys.argv[2])
 hr = 0
 while hr < 24:
     # Create datestamp
+    str_day_0 = "2016-01-"+str(day)+"T"+str(hr)+":"+str(0)+"0:00"
     str_day_1 = "2016-01-"+str(day)+"T"+str(hr)+":"+str(1)+"0:00"
     str_day_2 = "2016-01-"+str(day)+"T"+str(hr)+":"+str(2)+"0:00"
     str_day_3 = "2016-01-"+str(day)+"T"+str(hr)+":"+str(3)+"0:00"
     str_day_4 = "2016-01-"+str(day)+"T"+str(hr)+":"+str(4)+"0:00"
     str_day_5 = "2016-01-"+str(day)+"T"+str(hr)+":"+str(5)+"0:00"
     # Output strings
+    str_out_0 = "2016-01-"+str(day)+"T"+str(hr)+str(0)+"000-z"+str(scale)+".png"
     str_out_1 = "2016-01-"+str(day)+"T"+str(hr)+str(1)+"000-z"+str(scale)+".png"
     str_out_2 = "2016-01-"+str(day)+"T"+str(hr)+str(2)+"000-z"+str(scale)+".png"
     str_out_3 = "2016-01-"+str(day)+"T"+str(hr)+str(3)+"000-z"+str(scale)+".png"
@@ -30,6 +32,8 @@ while hr < 24:
 
     try:
         # Call function
+        t0 = threading.Thread(target=hi8_fetch.fetch_day, args=(str_day_0, scale, str_out_0))
+        t0.daemon = True
         t1 = threading.Thread(target=hi8_fetch.fetch_day, args=(str_day_1, scale, str_out_1))
         t1.daemon = True
         t2 = threading.Thread(target=hi8_fetch.fetch_day, args=(str_day_2, scale, str_out_2))
@@ -42,6 +46,7 @@ while hr < 24:
         t5.daemon = True
 
         # Start threads
+        t0.start();
         t1.start();
         t2.start();
         t3.start();
@@ -56,11 +61,12 @@ while hr < 24:
             t4.join(10);
             t5.join(10);
             # Check to see if all threads have exited
-            if not t1.isAlive() and not t2.isAlive() and not t3.isAlive() and not t4.isAlive() and not t5.isAlive():
+            if not t0.isAlive() and not t1.isAlive() and not t2.isAlive() and not t3.isAlive() and not t4.isAlive() and not t5.isAlive():
                 break
         
 
         # Stop threads
+        t0._stop();
         t1._stop();
         t2._stop();
         t3._stop();
@@ -73,7 +79,7 @@ while hr < 24:
         # If error, loop this fetch
         hr-=1
         print("Error = Relooping")
-        print(e)
+        #print(e)
 
     # Debug
     print("Exported = 2016-01-"+str(day)+"T"+str(hr)+":000:00")
