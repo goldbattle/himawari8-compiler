@@ -1,0 +1,10 @@
+# Ignore our compile and build folders
+cache/*
+!cache/.gitkeep
+compile/*
+!compile/.gitkeep
+output/*
+!output/.gitkeep
+
+# Ignore python build folder
+__pycache__/*
