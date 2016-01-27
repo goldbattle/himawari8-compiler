@@ -14,7 +14,7 @@ scale = int(sys.argv[2])
 
 # Iterate over the hours
 hr = 0
-while hr < 5:
+while hr < 24:
     # Create datestamp
     str_day_1 = "2016-01-"+str(day)+"T"+str(hr)+":"+str(1)+"0:00"
     str_day_2 = "2016-01-"+str(day)+"T"+str(hr)+":"+str(2)+"0:00"
@@ -50,15 +50,23 @@ while hr < 5:
 
         # Wait for them to join back up
         while True:
-            t1.join(60);
-            t2.join(60);
-            t3.join(60);
-            t4.join(60);
-            t5.join(60);
+            t1.join(10);
+            t2.join(10);
+            t3.join(10);
+            t4.join(10);
+            t5.join(10);
             # Check to see if all threads have exited
             if not t1.isAlive() and not t2.isAlive() and not t3.isAlive() and not t4.isAlive() and not t5.isAlive():
                 break
         
+
+        # Stop threads
+        t1._stop();
+        t2._stop();
+        t3._stop();
+        t4._stop();
+        t5._stop();
+
         #hi8_fetch.fetch_day(str_day_1, scale, str_out_1)
     
     except Exception as e:
