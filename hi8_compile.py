@@ -54,16 +54,13 @@ while hr < 24:
         t5.start();
 
         # Wait for them to join back up
-        while True:
+        while t0.isAlive() or t1.isAlive() or t2.isAlive() or t3.isAlive() or t4.isAlive() or t5.isAlive():
+            t0.join(10);
             t1.join(10);
             t2.join(10);
             t3.join(10);
             t4.join(10);
             t5.join(10);
-            # Check to see if all threads have exited
-            if not t0.isAlive() and not t1.isAlive() and not t2.isAlive() and not t3.isAlive() and not t4.isAlive() and not t5.isAlive():
-                break
-        
 
         # Stop threads
         t0._stop();
